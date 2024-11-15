@@ -60,20 +60,21 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
         const auto& driver = SDL_GetStringProperty(props, SDL_PROP_RENDERER_NAME_STRING, name);
         std::stringstream s;
 
-        s << "I TORTURE #";
+        s << "I torture #";
         s << display;
-        s << " WITH ";
+        s << " with ";
         s << driver;
-
-        const auto& str = s.str();
+        
+        auto str = s.str();
+        
+        std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+        
         const auto& sister = str.c_str();
 
         SDL_SetWindowTitle(window, sister);
-
         boundss->push_back(bounds);
         windows->push_back(window);
         renders->push_back(renderer);
-
         SDL_SetWindowPosition(window, bounds.x, bounds.y);
         SDL_ShowWindow(window);
         if (i == 0)
