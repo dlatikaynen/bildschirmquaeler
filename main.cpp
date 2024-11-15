@@ -43,13 +43,8 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
         SDL_Window* window = nullptr;
         SDL_Renderer* renderer = nullptr;
         
-        std::stringstream s;
-        s << display;
-        const auto& str = s.str();
-        const auto& sister = str.c_str();
-
         if (!SDL_CreateWindowAndRenderer(
-            sister,
+            "JUST WAIT",
             bounds.w,
             bounds.h,
             SDL_WINDOW_FULLSCREEN,
@@ -59,6 +54,21 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
         {
             return 1;
         }
+
+        const auto& name = SDL_GetRendererName(renderer);
+        const auto& props = SDL_GetRendererProperties(renderer);
+        const auto& driver = SDL_GetStringProperty(props, SDL_PROP_RENDERER_NAME_STRING, name);
+        std::stringstream s;
+
+        s << "I TORTURE #";
+        s << display;
+        s << " WITH ";
+        s << driver;
+
+        const auto& str = s.str();
+        const auto& sister = str.c_str();
+
+        SDL_SetWindowTitle(window, sister);
 
         boundss->push_back(bounds);
         windows->push_back(window);
