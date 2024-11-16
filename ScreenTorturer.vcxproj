@@ -124,6 +124,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
+    <Text Include="planning\storyboard.ligma" />
     <Text Include="readme.txt">
       <DeploymentContent>false</DeploymentContent>
     </Text>

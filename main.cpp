@@ -129,6 +129,9 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
     static std::random_device rd;
     static std::mt19937 gen(rd());
     static std::uniform_real_distribution dis(-0.2, 0.87);
+    static std::uniform_int_distribution col(0, 0xff);
+    static std::uniform_int_distribution col2(55, 0xac);
+    static std::uniform_int_distribution trans(0xee, 0xff);
 
     while (true)
     {
@@ -148,7 +151,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
         {
             if (pass == 0)
             {
-                if (!SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0xFF, 0xFF))
+                if (!SDL_SetRenderDrawColor(renderer, col2(gen), 0x00, 0xFF, 0xFF))
                 {
                     return 1;
                 }
@@ -175,7 +178,7 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
 
             if (pass == 0)
             {
-                if (!SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x88, 0xef))
+                if (!SDL_SetRenderDrawColor(renderer, col(gen), col2(gen), 0x88, trans(gen)))
                 {
                     return 1;
                 }

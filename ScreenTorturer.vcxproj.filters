@@ -33,5 +33,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+    <Text Include="planning\storyboard.ligma" />
   </ItemGroup>
 </Project>
