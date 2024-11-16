@@ -409,4 +409,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/SDL3-x64
+
+# Simple Direct Media Library sources
+/SDL3
