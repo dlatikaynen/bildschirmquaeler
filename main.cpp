@@ -16,8 +16,10 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
     SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         const auto &err = SDL_GetError();
-        std::cout << err;
-        std::cout << "SDL_Init failed";
+        std::cerr 
+            << "SDL_Init failed\n"
+            << err;
+
         return 1;
     }
 
@@ -25,6 +27,8 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
     const auto &displays = SDL_GetDisplays(&nDisplays);
 
     if (nDisplays == 0) {
+        std::cerr << "Congratulations, you attempted to start a screen saver on a machine with no display";
+
         return 1;
     }
 
@@ -40,12 +44,15 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
         SDL_Renderer *renderer = nullptr;
 
         if (!SDL_CreateWindowAndRenderer(
-                "JUST WAIT",
-                bounds.w,
-                bounds.h,
-                SDL_WINDOW_FULLSCREEN,
-                &window,
-                &renderer)) {
+            "JUST WAIT",
+            bounds.w,
+            bounds.h,
+            SDL_WINDOW_FULLSCREEN,
+            &window,
+            &renderer)
+        ) {
+            std::cerr << SDL_GetError();
+
             return 1;
         }
 
@@ -76,10 +83,14 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
         }
 
         if (!SDL_SetWindowFullscreenMode(window, NULL)) {
+            std::cerr << SDL_GetError();
+
             return 1;
         }
 
         if (!SDL_SyncWindow(window)) {
+            std::cerr << SDL_GetError();
+
             return 1;
         }
     }
@@ -135,32 +146,46 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
         for (const auto &renderer : *renders) {
             if (pass == 0) {
                 if (!SDL_SetRenderDrawColor(renderer, col2(gen), 0x00, 0xFF, 0xFF)) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             } else if (pass == 1) {
                 if (!SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF)) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             } else {
                 if (!SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF)) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             }
 
             if (!SDL_RenderClear(renderer)) {
+                std::cerr << SDL_GetError();
+
                 return 1;
             }
 
             if (pass == 0) {
                 if (!SDL_SetRenderDrawColor(renderer, col(gen), col2(gen), 0x88, trans(gen))) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             } else if (pass == 1) {
                 if (!SDL_SetRenderDrawColor(renderer, 0x00, 0x88, 0xFF, 0xef)) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             } else {
                 if (!SDL_SetRenderDrawColor(renderer, 0x88, 0xFF, 0x00, 0xef)) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             }
@@ -169,28 +194,40 @@ int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
             const auto &firstRect = renderedRects->data();
 
             if (!SDL_RenderFillRects(renderer, firstRect, nRects)) {
+                std::cerr << SDL_GetError();
+
                 return 1;
             }
 
             if (pass == 0) {
                 if (!SDL_SetRenderDrawColor(renderer, 0x55, 0x66, 0x77, 0xbb)) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             } else if (pass == 1) {
                 if (!SDL_SetRenderDrawColor(renderer, 0x66, 0x55, 0x77, 0xbb)) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             } else {
                 if (!SDL_SetRenderDrawColor(renderer, 0x55, 0x77, 0x66, 0xbb)) {
+                    std::cerr << SDL_GetError();
+
                     return 1;
                 }
             }
 
             if (!SDL_RenderRects(renderer, firstRect, nRects)) {
+                std::cerr << SDL_GetError();
+
                 return 1;
             }
 
             if (!SDL_RenderPresent(renderer)) {
+                std::cerr << SDL_GetError();
+
                 return 1;
             }
 
