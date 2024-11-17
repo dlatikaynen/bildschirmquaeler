@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string>
 
+#define SDL_VENDOR_INFO "SDL 3.1.6 statically linked for single-file distribution"
 #undef main
 
 int WINAPI wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PWSTR, _In_ int)
