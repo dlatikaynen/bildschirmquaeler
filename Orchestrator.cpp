@@ -22,8 +22,8 @@ int Orchestrate(
 	const bool doSquares = false;
 	const bool doSinWavesThere = false;
 	const bool doSinWavesBack = false;
-	const bool doGoL = true;
-	const bool doMandel = false;
+	const bool doGoL = false;
+	const bool doMandel = true;
 
 	if (doSquares) {
 		const auto rsr = RandomSquares(boundss, renders);

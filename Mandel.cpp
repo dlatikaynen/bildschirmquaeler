@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string>
 #include <chrono>
+#include <complex>
 
 #include "Mandel.h"
 
@@ -15,156 +16,47 @@ int Mandel(
     std::vector<SDL_Rect>* boundss,
     std::vector<SDL_Renderer*>* renders
 ) {
-    const auto& templateRects = std::make_unique<std::vector<SDL_FRect>>();
-    const auto& renderedRects = std::make_unique<std::vector<SDL_FRect>>();
+    std::complex<double> z{};
+    std::complex<double> c{};
 
-    const int expectedX = (boundss->at(0).w + 14) / 17 + 1;
-    const int expectedY = (boundss->at(0).h + 14 / 17) + 1;
-    const auto expectedNumberOfElements = static_cast<std::vector<SDL_FRect, std::allocator<SDL_FRect>>::size_type>(expectedY)* expectedX;
-
-    templateRects->reserve(expectedNumberOfElements);
-    renderedRects->reserve(expectedNumberOfElements);
-
-    SDL_FRect rect{};
-    int gridX = 0;
-    int gridY = 0;
-
-    for (int x = -7; x < boundss->at(0).w + 7; x += 17) {
-        for (int y = -7; y < boundss->at(0).h + 7; y += 17) {
-            rect.x = static_cast<float>(x);
-            rect.y = static_cast<float>(y);
-            rect.w = 15;
-            rect.h = 15;
-            templateRects->push_back(rect);
-
-            if (gridX == 0) {
-                ++gridY;
-            }
-        }
-
-        ++gridX;
-    }
-
-    const int countSquares = templateRects->size();
-    const auto startTime = std::chrono::steady_clock::now();
-    int curIndex = 0;
+    constexpr const int maxIter = 0xff;
+    int i;
 
     while (true) {
-        // update
-        renderedRects->clear();
-        curIndex = (curIndex + 1) % countSquares;
-        for (const auto& entry : *templateRects) {
-            if ((gridX++ + curIndex) % 5 == 0) {
-                renderedRects->push_back(entry);
-            }
-        }
-
-        // timing
-        if (curIndex % 16 == 0) {
-            const auto curTick = std::chrono::steady_clock::now();
-            const auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(curTick - startTime).count();
-
-            if (elapsed > 9) {
-                break;
-            }
-        }
-
-        // render
         int display = 0;
+
         for (const auto& renderer : *renders) {
-            if (display == 0) {
-                if (!SDL_SetRenderDrawColor(renderer, 0x23, 0x00, 0xFF, 0xFF)) {
-                    std::cerr << SDL_GetError();
+            const auto& bounds = boundss->at(display);
 
-                    return 1;
-                }
-            }
-            else if (display == 1) {
-                if (!SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF)) {
-                    std::cerr << SDL_GetError();
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff);
+            SDL_RenderClear(renderer);
+            for (double x = -2.0; x <= 1.0; x += 0.01) {
+                for (double y = -2.0; y <= 2.0; y += 0.01) {
+                    c = std::complex<double>(x, y);
+                    z = std::complex<double>(0, 0);
 
-                    return 1;
-                }
-            }
-            else {
-                if (!SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF)) {
-                    std::cerr << SDL_GetError();
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff);
+                    for (i = 0; i < maxIter; ++i) {
+                        z = z * z + c;
 
-                    return 1;
-                }
-            }
+                        if (abs(z) > 2) {
+                            SDL_SetRenderDrawColor(
+                                renderer,
+                                i % 0xff,
+                                0xff - (i % 0xff),
+                                i % 0xff,
+                                0xFF
+                            );
 
-            if (!SDL_RenderClear(renderer)) {
-                std::cerr << SDL_GetError();
+                            break;
+                        }
+                    }
 
-                return 1;
-            }
-
-            if (display == 0) {
-                if (!SDL_SetRenderDrawColor(renderer, 0x25, 0x7f, 0x88, 0xff)) {
-                    std::cerr << SDL_GetError();
-
-                    return 1;
-                }
-            }
-            else if (display == 1) {
-                if (!SDL_SetRenderDrawColor(renderer, 0x00, 0x88, 0xFF, 0xef)) {
-                    std::cerr << SDL_GetError();
-
-                    return 1;
-                }
-            }
-            else {
-                if (!SDL_SetRenderDrawColor(renderer, 0x88, 0xFF, 0x00, 0xef)) {
-                    std::cerr << SDL_GetError();
-
-                    return 1;
+                    SDL_RenderPoint(renderer, bounds.w / 2 + 200 * x, bounds.h / 2 + 200 * y);
                 }
             }
 
-            const auto& nRects = (int)renderedRects->size();
-            const auto& firstRect = renderedRects->data();
-
-            if (!SDL_RenderFillRects(renderer, firstRect, nRects)) {
-                std::cerr << SDL_GetError();
-
-                return 1;
-            }
-
-            if (display == 0) {
-                if (!SDL_SetRenderDrawColor(renderer, 0x55, 0x66, 0x77, 0xbb)) {
-                    std::cerr << SDL_GetError();
-
-                    return 1;
-                }
-            }
-            else if (display == 1) {
-                if (!SDL_SetRenderDrawColor(renderer, 0x66, 0x55, 0x77, 0xbb)) {
-                    std::cerr << SDL_GetError();
-
-                    return 1;
-                }
-            }
-            else {
-                if (!SDL_SetRenderDrawColor(renderer, 0x55, 0x77, 0x66, 0xbb)) {
-                    std::cerr << SDL_GetError();
-
-                    return 1;
-                }
-            }
-
-            if (!SDL_RenderRects(renderer, firstRect, nRects)) {
-                std::cerr << SDL_GetError();
-
-                return 1;
-            }
-
-            if (!SDL_RenderPresent(renderer)) {
-                std::cerr << SDL_GetError();
-
-                return 1;
-            }
-
+            SDL_RenderPresent(renderer);
             ++display;
         }
     }
