@@ -9,9 +9,9 @@
 #include <string>
 #include <chrono>
 
-#include "RandomSquares.h"
+#include "GoL.h"
 
-int RandomSquares(
+int GoL(
     std::vector<SDL_Rect>* boundss,
     std::vector<SDL_Renderer*>* renders
 ) {
@@ -45,13 +45,6 @@ int RandomSquares(
         ++gridX;
     }
 
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_real_distribution dis(-0.2, 0.87);
-    static std::uniform_int_distribution col(0xef, 0xff);
-    static std::uniform_int_distribution col2(55, 66);
-    static std::uniform_int_distribution trans(0xee, 0xf3);
-
     const int countSquares = templateRects->size();
     const auto startTime = std::chrono::steady_clock::now();
     int prevIndex = -1;
@@ -72,7 +65,7 @@ int RandomSquares(
         std::swap(templateRects->at(curIndex), templateRects->at(countSquares - 1));
 
         for (const auto& entry : *templateRects) {
-            if (sin(gridX++) * dis(gen) > 0) {
+            if (abs(sin(gridX++)) > 0.2) {
                 renderedRects->push_back(entry);
             }
         }
@@ -85,7 +78,7 @@ int RandomSquares(
             const auto curTick = std::chrono::steady_clock::now();
             const auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(curTick - startTime).count();
 
-            if (elapsed > 4) {
+            if (elapsed > 9) {
                 break;
             }
         }
@@ -94,7 +87,7 @@ int RandomSquares(
         int display = 0;
         for (const auto& renderer : *renders) {
             if (display == 0) {
-                if (!SDL_SetRenderDrawColor(renderer, col2(gen), 0x00, 0xFF, 0xFF)) {
+                if (!SDL_SetRenderDrawColor(renderer, 0x23, 0x00, 0xFF, 0xFF)) {
                     std::cerr << SDL_GetError();
 
                     return 1;
@@ -122,7 +115,7 @@ int RandomSquares(
             }
 
             if (display == 0) {
-                if (!SDL_SetRenderDrawColor(renderer, col(gen), col2(gen), 0x88, trans(gen))) {
+                if (!SDL_SetRenderDrawColor(renderer, 0x25, 0x7f, 0x88, 0xff)) {
                     std::cerr << SDL_GetError();
 
                     return 1;

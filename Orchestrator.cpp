@@ -10,13 +10,21 @@
 
 #include "Orchestrator.h"
 #include "RandomSquares.h"
+#include "GoL.h"
 
 int Orchestrate(
 	std::vector<SDL_Rect>* boundss,
 	std::vector<SDL_Renderer*>* renders
 ) {
-	return RandomSquares(
-		boundss,
-		renders
-	);
+	const auto rsr = RandomSquares(boundss, renders);
+	if (rsr != 0)
+	{
+		return rsr;
+	}
+
+	const auto gol = GoL(boundss, renders);
+	if (gol != 0)
+	{
+		return gol;
+	}
 }
