@@ -969,6 +969,9 @@
       <Filter>SDL3</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\GoL.h" />
+    <ClInclude Include="..\..\..\Mandel.h" />
+    <ClInclude Include="..\..\..\SinWavesBack.h" />
+    <ClInclude Include="..\..\..\SinWavesThere.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\camera\dummy\SDL_camera_dummy.c">
@@ -1698,6 +1701,9 @@
       <Filter>SDL3</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\GoL.cpp" />
+    <ClCompile Include="..\..\..\Mandel.cpp" />
+    <ClCompile Include="..\..\..\SinWavesBack.cpp" />
+    <ClCompile Include="..\..\..\SinWavesThere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\src\core\windows\version.rc" />
