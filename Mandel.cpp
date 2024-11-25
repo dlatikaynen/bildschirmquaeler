@@ -30,10 +30,10 @@ int Mandel(
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff);
             SDL_RenderClear(renderer);
-            for (double x = -2.0; x <= 1.0; x += 0.01) {
-                for (double y = -2.0; y <= 2.0; y += 0.01) {
-                    c = std::complex<double>(x, y);
-                    z = std::complex<double>(0, 0);
+            for (double x = -2.0; x <= 1.0; x += 0.02) {
+                for (double y = -2.0; y <= 2.0; y += 0.02) {
+                    c = { x, y };
+                    z = { 0, 0 };
 
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff);
                     for (i = 0; i < maxIter; ++i) {

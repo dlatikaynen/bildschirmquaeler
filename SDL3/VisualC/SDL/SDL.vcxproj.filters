@@ -1713,4 +1713,7 @@
       <Filter>SDL3</Filter>
     </MASM>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\planning\storyboard.ligma" />
+  </ItemGroup>
 </Project>

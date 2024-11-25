@@ -790,6 +790,9 @@
   <ItemGroup>
     <ResourceCompile Include="..\..\src\core\windows\version.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\planning\storyboard.ligma" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
