@@ -109,12 +109,14 @@ int GoL(
         }
     }
 
-    const auto countSquares = static_cast<int>(cells->size());
+    const int countSquares{ static_cast<int>(cells->size()) };
     static std::uniform_int_distribution ttl(0, countSquares);
     const auto startTime = std::chrono::steady_clock::now();
-    const int threePerc = countSquares / 100.0 * 5.1;
+    const int threePerc = static_cast<int>(countSquares / 100.0 * 5.1);
     int frame = 0;
     int pass = 0;
+
+    // prepare a palette for the longevity colorization
 
     while (true) {
         // update

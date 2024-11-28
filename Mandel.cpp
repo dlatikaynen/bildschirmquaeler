@@ -37,6 +37,9 @@ int Mandel(
 
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff);
                     for (i = 0; i < maxIter; ++i) {
+                        // See that's why I love C++ so much
+                        // Can your Rust do that?
+                        // I don't fishing think so!
                         z = z * z + c;
 
                         if (abs(z) > 2) {
