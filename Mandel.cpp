@@ -21,16 +21,20 @@ int Mandel(
 
     constexpr const int maxIter = 0xff;
     int i;
+    int frame = 0;
+    int pow = -30;
 
-    while (true) {
+    while (++frame) {
         int display = 0;
+
+         ++pow;
 
         for (const auto& renderer : *renders) {
             const auto& bounds = boundss->at(display);
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff);
             SDL_RenderClear(renderer);
-            for (double x = -2.0; x <= 1.0; x += 0.02) {
+            for (double x = -2.0; x <= 2.0; x += 0.02) {
                 for (double y = -2.0; y <= 2.0; y += 0.02) {
                     c = { x, y };
                     z = { 0, 0 };
@@ -40,7 +44,8 @@ int Mandel(
                         // See that's why I love C++ so much
                         // Can your Rust do that?
                         // I don't fishing think so!
-                        z = z * z + c;
+                        z = std::pow(z, pow / 10.0);
+                        z -= std::tan(c);
 
                         if (abs(z) > 2) {
                             SDL_SetRenderDrawColor(
