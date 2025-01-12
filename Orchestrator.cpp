@@ -19,11 +19,11 @@ int Orchestrate(
 	std::vector<SDL_Rect>* boundss,
 	std::vector<SDL_Renderer*>* renders
 ) {
-	const bool doSquares = false;
-	const bool doSinWavesThere = false;
-	const bool doSinWavesBack = false;
-	const bool doGoL = false;
-	const bool doMandel = true;
+	const constexpr bool doSquares = true;
+	const constexpr bool doSinWavesThere = true;
+	const constexpr bool doSinWavesBack = true;
+	const constexpr bool doMandel = true;
+	const constexpr bool doGoL = true;
 
 	if (doSquares) {
 		const auto rsr = RandomSquares(boundss, renders);
@@ -49,19 +49,19 @@ int Orchestrate(
 		}
 	}
 
-	if (doGoL) {
-		const auto gol = GoL(boundss, renders);
-		if (gol != 0)
-		{
-			return gol;
-		}
-	}
-
 	if (doMandel) {
 		const auto mbr = Mandel(boundss, renders);
 		if (mbr != 0)
 		{
 			return mbr;
+		}
+	}
+
+	if (doGoL) {
+		const auto gol = GoL(boundss, renders);
+		if (gol != 0)
+		{
+			return gol;
 		}
 	}
 

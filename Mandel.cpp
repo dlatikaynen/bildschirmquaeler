@@ -19,15 +19,29 @@ int Mandel(
     std::complex<double> z{};
     std::complex<double> c{};
 
+    const auto startTime = std::chrono::steady_clock::now();
     constexpr const int maxIter = 0xff;
     int i;
     int frame = 0;
-    int pow = -30;
+    int pow = 2;
+    SDL_Event event;
 
-    while (++frame) {
+    while (!(SDL_PollEvent(&event) == 1 && event.type == SDL_EVENT_QUIT))
+    {
         int display = 0;
 
-         ++pow;
+        ++frame;
+        ++pow;
+
+        // timing
+        if (frame % 16 == 0) {
+            const auto curTick = std::chrono::steady_clock::now();
+            const auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(curTick - startTime).count();
+
+            if (elapsed > 20) {
+                break;
+            }
+        }
 
         for (const auto& renderer : *renders) {
             const auto& bounds = boundss->at(display);
@@ -44,15 +58,14 @@ int Mandel(
                         // See that's why I love C++ so much
                         // Can your Rust do that?
                         // I don't fishing think so!
-                        z = std::pow(z, pow / 10.0);
-                        z -= std::tan(c);
+                        z = std::pow(z, pow / 10.0) + c;
 
                         if (abs(z) > 2) {
                             SDL_SetRenderDrawColor(
                                 renderer,
-                                i % 0xff,
-                                0xff - (i % 0xff),
-                                i % 0xff,
+                                static_cast<int>(std::abs(z) * 255) % 0xff,
+                                0xff - (static_cast<int>(std::abs(c) * 255) % 0xff),
+                                static_cast<int>(std::abs(x * 128.0)) % 0xff,
                                 0xFF
                             );
 

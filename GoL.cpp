@@ -52,7 +52,7 @@ static int indexAt(int x, int y) noexcept {
 
 int GoL(
     std::vector<SDL_Rect>* boundss,
-    std::vector<SDL_Renderer*>* renders
+    std::vector<SDL_Renderer*>* renders 
 ) {
     const auto& cells = std::make_unique<std::vector<cell>>();
     const auto& lives = std::make_unique<std::vector<SDL_FRect>>();
@@ -112,13 +112,15 @@ int GoL(
     const int countSquares{ static_cast<int>(cells->size()) };
     static std::uniform_int_distribution ttl(0, countSquares);
     const auto startTime = std::chrono::steady_clock::now();
-    const int threePerc = static_cast<int>(countSquares / 100.0 * 5.1);
+    const int threePerc = static_cast<int>(countSquares / 100.0 * 17.1);
     int frame = 0;
     int pass = 0;
+    SDL_Event event;
 
     // prepare a palette for the longevity colorization
-
-    while (true) {
+    
+    while (!(SDL_PollEvent(&event) == 1 && event.type == SDL_EVENT_QUIT))
+    {
         // update
         if ((frame % 5) == 0) {
             const bool isEven = (pass++ % 2) == 0;
@@ -186,16 +188,16 @@ int GoL(
             const auto curTick = std::chrono::steady_clock::now();
             const auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(curTick - startTime).count();
 
-           if (elapsed > 300) {
-               break;
-           }
+            //if (elapsed > 300) {
+            //    break;
+            //}
         }
 
         // render
         int display = 0;
         for (const auto& renderer : *renders) {
             if (display == 0) {
-                if (!SDL_SetRenderDrawColor(renderer, 0x23, 0x00, 0xFF, 0xFF)) {
+                if (!SDL_SetRenderDrawColor(renderer, 0x33, 0xdd, 0x12, 0xFF)) {
                     std::cerr << SDL_GetError();
 
                     return 1;
@@ -223,7 +225,7 @@ int GoL(
             }
 
             if (display == 0) {
-                if (!SDL_SetRenderDrawColor(renderer, 0x25, 0x7f, 0x88, 0xff)) {
+                if (!SDL_SetRenderDrawColor(renderer, 0xff, 0xdd, 0xbb, 0xff)) {
                     std::cerr << SDL_GetError();
 
                     return 1;
@@ -256,7 +258,7 @@ int GoL(
             }
 
             if (display == 0) {
-                if (!SDL_SetRenderDrawColor(renderer, 0x55, 0x66, 0x77, 0xbb)) {
+                if (!SDL_SetRenderDrawColor(renderer, 0xf0, 0xd0, 0xb0, 0xbb)) {
                     std::cerr << SDL_GetError();
 
                     return 1;

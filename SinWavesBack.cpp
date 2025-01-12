@@ -48,8 +48,10 @@ int SinWavesBack(
     const int countSquares = templateRects->size();
     const auto startTime = std::chrono::steady_clock::now();
     int curIndex = 0;
+    SDL_Event event;
 
-    while (true) {
+    while (!(SDL_PollEvent(&event) == 1 && event.type == SDL_EVENT_QUIT))
+    {
         // update
         renderedRects->clear();
         for (const auto& entry : *templateRects) {

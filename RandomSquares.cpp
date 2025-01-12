@@ -52,12 +52,14 @@ int RandomSquares(
     static std::uniform_int_distribution col2(55, 66);
     static std::uniform_int_distribution trans(0xee, 0xf3);
 
-    const int countSquares = templateRects->size();
+    const auto countSquares = templateRects->size();
     const auto startTime = std::chrono::steady_clock::now();
     int prevIndex = -1;
     int curIndex = 0;
+    SDL_Event event;
 
-    while (true) {
+    while (!(SDL_PollEvent(&event) == 1 && event.type == SDL_EVENT_QUIT))
+    {
         // update
         renderedRects->clear();
 
