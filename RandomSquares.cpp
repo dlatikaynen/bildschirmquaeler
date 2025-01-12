@@ -58,7 +58,7 @@ int RandomSquares(
     int curIndex = 0;
     SDL_Event event;
 
-    while (!(SDL_PollEvent(&event) == 1 && event.type == SDL_EVENT_QUIT))
+    while (!(SDL_PollEvent(&event) == 1 && (event.type == SDL_EVENT_QUIT || event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_MOUSE_MOTION)))
     {
         // update
         renderedRects->clear();

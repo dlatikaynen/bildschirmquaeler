@@ -119,7 +119,7 @@ int GoL(
 
     // prepare a palette for the longevity colorization
     
-    while (!(SDL_PollEvent(&event) == 1 && event.type == SDL_EVENT_QUIT))
+    while (!(SDL_PollEvent(&event) == 1 && (event.type == SDL_EVENT_QUIT || event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_MOUSE_MOTION)))
     {
         // update
         if ((frame % 5) == 0) {

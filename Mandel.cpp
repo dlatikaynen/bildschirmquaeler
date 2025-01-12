@@ -26,7 +26,7 @@ int Mandel(
     int pow = 2;
     SDL_Event event;
 
-    while (!(SDL_PollEvent(&event) == 1 && event.type == SDL_EVENT_QUIT))
+    while (!(SDL_PollEvent(&event) == 1 && (event.type == SDL_EVENT_QUIT || event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_MOUSE_MOTION)))
     {
         int display = 0;
 
