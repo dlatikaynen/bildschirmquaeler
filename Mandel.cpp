@@ -26,7 +26,7 @@ int Mandel(
     int pow = 2;
     SDL_Event event;
 
-    while (!(SDL_PollEvent(&event) == 1 && (event.type == SDL_EVENT_QUIT || event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_MOUSE_MOTION)))
+    while (!(SDL_PollEvent(&event) == 1 && (event.type == SDL_EVENT_QUIT || event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)))
     {
         int display = 0;
 
@@ -57,10 +57,11 @@ int Mandel(
                     for (i = 0; i < maxIter; ++i) {
                         // See that's why I love C++ so much
                         // Can your Rust do that?
-                        // I don't fishing think so!
+                        // ♫ ♪ ♫ Can your Rust do that? ♫ ♪ ♫
+                        // I don't fricking think so.
                         z = std::pow(z, pow / 10.0) + c;
 
-                        if (abs(z) > 2) {
+                        if (z.real() * z.real() + z.imag() * z.imag() > 4) {
                             SDL_SetRenderDrawColor(
                                 renderer,
                                 static_cast<int>(std::abs(z) * 255) % 0xff,
